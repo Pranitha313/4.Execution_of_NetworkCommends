@@ -30,6 +30,52 @@ This commands includes
 • Other IP Commands e.g. show ip route etc.
 <br>
 
+## Program
+### Ping
+
+server.py
+~~~
+import socket, subprocess
+
+s = socket.socket()
+s.bind(("localhost", 5000))
+s.listen(1)
+
+c, addr = s.accept()
+host = c.recv(1024).decode()
+
+result = subprocess.getoutput("ping " + host)
+c.send(result.encode())
+
+c.close()
+~~~
+
+client.py
+~~~
+import socket
+
+c = socket.socket()
+c.connect(("localhost", 5000))
+
+host = input("Enter website/IP: ")
+c.send(host.encode())
+
+print(c.recv(4096).decode())
+
+c.close()
+~~~
+
+### tracert
+
+trace.py
+~~~
+import subprocess
+
+target = input("Enter website or IP: ")
+
+subprocess.run(["tracert", target])
+~~~
+
 ## Output
 
 ### ping
